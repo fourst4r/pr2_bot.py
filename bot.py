@@ -1,4 +1,6 @@
 import settings
+
+import sys
 from discord.ext import commands
 
 from os import listdir
@@ -30,6 +32,11 @@ async def load(extension_name : str):
         return
     await bot.say("{} loaded.".format(extension_name))
 
+# @bot.command()
+# async def test(player_name : str):
+#     player = pr2hub.get_player_info(player_name)
+#     await bot.say(player.name)
+
 @bot.command()
 async def unload(extension_name : str):
     """Unloads an extension."""
@@ -48,7 +55,7 @@ async def repeat(times : int, content='repeating...'):
         await bot.say(content)
 
 def main():
-    print("started")
+#if __name__ == "__main__":
     for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
         try:
             bot.load_extension(cogs_dir + "." + extension)

@@ -1,3 +1,4 @@
+import pr2hub
 from discord.ext import commands
 
 class PR2():
@@ -6,7 +7,8 @@ class PR2():
 
     @commands.command(description='returns player information')
     async def player_info(self, player_name : str):
-
+        player = pr2hub.get_player_info(player_name)
+        await self.bot.say(player.name)
 
     @commands.command()
     async def roll(self, dice : str):

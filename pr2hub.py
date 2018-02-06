@@ -5,9 +5,9 @@ levels = pr2hub.join("levels")
 files = pr2hub.join("files")
 
 def __error_check(response):
-    if response.content.startswith("error="):
+    if response.content.startswith(b"error="):
         raise PR2HubError(response.content[6:])
-    elif response.content.startswith("{error:\""):
+    elif response.content.startswith(b"{error:\""):
         raise PR2HubError(response.content[8:2])
 
 def get_player_info(player_name : str):
