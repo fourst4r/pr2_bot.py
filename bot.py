@@ -47,7 +47,7 @@ async def repeat(times : int, content='repeating...'):
     for _ in range(times):
         await bot.say(content)
 
-if __name__ == "__main__":
+def main():
     for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
         try:
             bot.load_extension(cogs_dir + "." + extension)
@@ -56,3 +56,6 @@ if __name__ == "__main__":
             #traceback.print_exc()
 
     bot.run(settings.token)
+
+if __name__ == "__main__":
+    main()
