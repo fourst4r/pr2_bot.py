@@ -1,14 +1,26 @@
 import pr2hub
+import discord
 from discord.ext import commands
 
 class PR2():
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(description='returns player information')
+    @commands.command(description="returns player information")
     async def player_info(self, player_name : str):
         player = pr2hub.get_player_info(player_name)
-        await self.bot.say(player.name)
+
+        description = f"**Name:** {player.name}\n"
+        description += f"**Status:** {player.status}\n"
+        description += f"**Group:** {player.group}\n"
+        description += f"**Guild:** {player.guild_name}\n"
+        description += f"**Rank:** {player.rank}\n"
+        description += f"**Hats:** {player.hats}\n"
+        description += f"**Joined:** {player.register_date}\n"
+        description += f"**Active:** {player.login_date}"
+
+        embed = discord.Embed(title="-- Player Info --", description=description)
+        await self.bot.say(embed=embed)
 
     @commands.command()
     async def roll(self, dice : str):

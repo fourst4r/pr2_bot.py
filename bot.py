@@ -1,6 +1,4 @@
 import settings
-
-import sys
 from discord.ext import commands
 
 from os import listdir
