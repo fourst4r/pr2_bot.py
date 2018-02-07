@@ -11,7 +11,7 @@ There are a number of utility commands being showcased here.'''
 # this specifies what extensions to load when the bot starts up (from this directory)
 cogs_dir = "cogs"
 
-bot = commands.Bot(command_prefix='!', description=description)
+bot = commands.Bot(command_prefix='!', description=description, pm_help=True)
 
 @bot.event
 async def on_ready():

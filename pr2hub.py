@@ -1,12 +1,13 @@
 from nap.url import Url
 
-pr2hub = Url("https://pr2hub.com")
-levels = pr2hub.join("levels")
-files = pr2hub.join("files")
+pr2hub = Url("https://pr2hub.com/")
+levels = pr2hub.join("levels/")
+files = pr2hub.join("files/")
 
 def __error_check(response):
+    """checks if a pr2hub response is an error"""
     if response.content.startswith(b"error="):
-        raise PR2HubError(response.content()[6:])
+        raise PR2HubError(str(response.content)[6:])
     elif response.content.startswith(b"{\"error\":\""):
         raise PR2HubError(response.json()["error"])
 

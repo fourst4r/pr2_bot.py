@@ -35,7 +35,7 @@ class PR2():
 
     @commands.command(description="returns guild information",
                       aliases=["gi", "guild"])
-    async def guild_info(self, guild_name : str):
+    async def guild_info(self, *, guild_name : str):
         if len(guild_name) > 20:
             await self.bot.say("Parameter too long: `guild_name`")
             return
@@ -57,6 +57,39 @@ class PR2():
 
         embed = discord.Embed(title="-- Guild Info --", description=description)
         await self.bot.say(embed=embed)
+
+    @commands.command(description="returns info of every server",
+                      aliases=["hh", "status"])
+    async def server_info(self):
+        servers = None
+
+        try:
+            servers = pr2hub.get_servers_info()
+        except pr2hub.PR2HubError as e:
+            await self.bot.say(str(e))
+            return
+
+        description = ""
+
+        for server in servers:
+            line = ""
+            line += server.name
+
+            if server.status == "down":
+                line += " (down)"
+            else:
+                line += f" ({server.population} online)"
+
+            if server.is_happy_hour:
+                line = f"**!! {line}**"
+
+            line += "\n"
+            description += line
+
+        embed = discord.Embed(title="-- Server Info --", description=description)
+        await self.bot.say(embed=embed)
+
+
 
 def setup(bot):
     bot.add_cog(PR2(bot))
