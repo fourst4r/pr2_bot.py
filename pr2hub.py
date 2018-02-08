@@ -50,7 +50,7 @@ class Server:
         self.name = json["server_name"]
         self.address = json["address"]
         self.port = json["port"]
-        self.population = json["population"]
+        self.population = int(json["population"])
         self.status = json["status"]
         self.guild_id = json["guild_id"]
         self.is_tournament = json["tournament"]
@@ -75,14 +75,19 @@ class Guild:
         self.id = guild_json["guild_id"]
         self.creation_date = guild_json["creation_date"]
         self.active_date = guild_json["active_date"]
-        self.member_count = guild_json["member_count"]
-        self.active_count = guild_json["active_count"]
+        self.member_count = int(guild_json["member_count"])
+        self.active_count = int(guild_json["active_count"])
         self.emblem = guild_json["emblem"]
         self.gp_today = guild_json["gp_today"]
-        self.gp_total = guild_json["gp_total"]
+        self.gp_total = int(guild_json["gp_total"])
         self.owner_id = guild_json["owner_id"]
         self.note = guild_json["note"]
         self.members = []
+
+        if self.gp_today == None:
+            self.gp_today = 0
+        else:
+            self.gp_today = int(self.gp_today)
 
         for member_json in members_json:
             self.members.append(self.Member(member_json))
@@ -92,22 +97,26 @@ class Guild:
             self.id = json2["user_id"]
             self.name = json2["name"]
             self.group = json2["power"]
-            self.rank = json2["rank"]
+            self.rank = int(json2["rank"])
             self.gp_today = json2["gp_today"]
             self.gp_total = json2["gp_total"]
 
             if self.gp_today == None:
                 self.gp_today = 0
+            else:
+                self.gp_today = int(self.gp_today)
 
             if self.gp_total == None:
                 self.gp_total = 0
+            else:
+                self.gp_total = int(self.gp_total)
 
 class Player:
     def __init__(self, json):
         self.id = json["userId"]
         self.name = json["name"]
-        self.rank = json["rank"]
-        self.hats = json["hats"]
+        self.rank = int(json["rank"])
+        self.hats = int(json["hats"])
         self.status = json["status"]
         self.login_date = json["loginDate"]
         self.register_date = json["registerDate"]

@@ -1,17 +1,17 @@
 import settings
+import inspect
+import discord
 from discord.ext import commands
-
 from os import listdir
 from os.path import isfile, join
 
-description = '''An example bot to showcase the discord.ext.commands extension
-module.
-There are a number of utility commands being showcased here.'''
+description = '''A PR2 utility bot.'''
 
 # this specifies what extensions to load when the bot starts up (from this directory)
 cogs_dir = "cogs"
 
-bot = commands.Bot(command_prefix='!', description=description, pm_help=True)
+bot = commands.Bot(command_prefix='!', description=description)
+bot.remove_command("help")
 
 @bot.event
 async def on_ready():
@@ -21,39 +21,37 @@ async def on_ready():
     print('------')
 
 @bot.command()
-async def load(extension_name : str):
-    """Loads an extension."""
-    try:
-        bot.load_extension(extension_name)
-    except (AttributeError, ImportError) as e:
-        await bot.say("```py\n{}: {}\n```".format(type(e).__name__, str(e)))
-        return
-    await bot.say("{} loaded.".format(extension_name))
+async def help(command_name : str=None):
+    if command_name == None:
+        command_names = []
+        for _,command in bot.commands.items():
+            if command.name not in command_names:
+                command_names.append(command.name)
+        
+        embed = discord.Embed(title="-- Command List --", description="\n".join(command_names))
+        await bot.say(embed=embed)
+    else:
+        if command_name in bot.commands:
+            command = bot.commands[command_name]
+            aliases_str = ", ".join(command.aliases)
+            params_str = get_params_str(command)
 
-# @bot.command()
-# async def test(player_name : str):
-#     player = pr2hub.get_player_info(player_name)
-#     await bot.say(player.name)
+            description = f"**Name:** {command.name}\n"
+            description += f"**Params:** {params_str}\n"
+            description += f"**Aliases:** {aliases_str}\n"
+            description += f"**Description:** {command.description}"
 
-@bot.command()
-async def unload(extension_name : str):
-    """Unloads an extension."""
-    bot.unload_extension(extension_name)
-    await bot.say("{} unloaded.".format(extension_name))
+            embed = discord.Embed(title="-- Command Info --", description=description)
+            embed.set_footer(text="try '!help <command>' for more info")
+            await bot.say(embed=embed)
+        else:
+            await bot.say("That command does not exist.")
 
-@bot.command()
-async def add(left : int, right : int):
-    """Adds two numbers together."""
-    await bot.say(left + right)
-
-@bot.command()
-async def repeat(times : int, content='repeating...'):
-    """Repeats a message multiple times."""
-    for _ in range(times):
-        await bot.say(content)
+def get_params_str(command):
+        func = inspect.signature(eval(command.name))
+        return func.parameters
 
 def main():
-#if __name__ == "__main__":
     for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
         try:
             bot.load_extension(cogs_dir + "." + extension)
