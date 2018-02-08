@@ -28,6 +28,7 @@ async def help(command_name : str=None):
                 command_names.append(command.name)
         
         embed = discord.Embed(title="-- Command List --", description="\n".join(command_names))
+        embed.set_footer(text="try '!help <command>' for more info")
         await bot.say(embed=embed)
     else:
         if command_name in bot.commands:
@@ -40,7 +41,6 @@ async def help(command_name : str=None):
             description += f"**Description:** {command.description}"
 
             embed = discord.Embed(title="-- Command Info --", description=description)
-            embed.set_footer(text="try '!help <command>' for more info")
             await bot.say(embed=embed)
         else:
             await bot.say("That command does not exist.")
