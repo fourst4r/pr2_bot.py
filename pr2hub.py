@@ -3,6 +3,7 @@ from nap.url import Url
 pr2hub = Url("https://pr2hub.com/")
 levels = pr2hub.join("levels/")
 files = pr2hub.join("files/")
+emblems = pr2hub.join("emblems/")
 
 def __error_check(response):
     """checks if a pr2hub response is an error"""

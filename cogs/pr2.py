@@ -10,7 +10,7 @@ class PR2():
     @commands.command(description="returns player information", 
                       aliases=["pi", "view"],
                       brief="player_name")
-    async def player_info(self, player_name : str):
+    async def player_info(self, *, player_name : str):
         #region SANITY
 
         if len(player_name) > 20:
@@ -67,6 +67,7 @@ class PR2():
         description += f"**Prose:** {guild.note}"
 
         embed = discord.Embed(title="-- Guild Info --", description=description)
+        embed.set_thumbnail(url=pr2hub.emblems.url + guild.emblem)
         await self.bot.say(embed=embed)
 
     @commands.command(description="returns the names of all members in a guild",
@@ -174,8 +175,6 @@ class PR2():
 
         embed = discord.Embed(title="-- Server Info --", description=description)
         await self.bot.say(embed=embed)
-
-
 
 def setup(bot):
     bot.add_cog(PR2(bot))
