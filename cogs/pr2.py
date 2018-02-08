@@ -8,7 +8,8 @@ class PR2():
         self.bot = bot
 
     @commands.command(description="returns player information", 
-                      aliases=["pi", "view"])
+                      aliases=["pi", "view"],
+                      brief="player_name")
     async def player_info(self, player_name : str):
         #region SANITY
 
@@ -39,7 +40,8 @@ class PR2():
         await self.bot.say(embed=embed)
 
     @commands.command(description="returns guild information",
-                      aliases=["gi", "guild"])
+                      aliases=["gi", "guild"],
+                      brief="guild_name")
     async def guild_info(self, *, guild_name : str):
         #region SANITY
 
@@ -68,7 +70,8 @@ class PR2():
         await self.bot.say(embed=embed)
 
     @commands.command(description="returns the names of all members in a guild",
-                      aliases=["gm", "guildm"])
+                      aliases=["gm", "guildm"],
+                      brief="guild_name")
     async def guild_members(self, *, guild_name : str):
         #region SANITY
 
@@ -103,7 +106,7 @@ class PR2():
             value1 = guild_member_names[:half_member_count+1]
             value2 = guild_member_names[half_member_count+1:half_member_count*2+1]
 
-        embed = discord.Embed(title=f"-- Guild Members ({guild.member_count}) --")
+        embed = discord.Embed(title=f"-- Guild Members ({len(guild_member_names)}) --")
         embed.add_field(name="1", value="\n".join(value1), inline=True)
         if guild.member_count > 1:
             embed.add_field(name="2", value="\n".join(value2), inline=True)
@@ -111,7 +114,8 @@ class PR2():
         await self.bot.say(embed=embed)
 
     @commands.command(description="calculates experience required to reach a specified rank",
-                      aliases=["xp"])
+                      aliases=["xp"],
+                      brief="from [to [exp_per_day=700]]")
     async def exp(self, _from : int, to : int=None, exp_per_day=700):
         if to == None:
             to = _from + 1

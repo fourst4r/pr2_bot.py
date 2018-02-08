@@ -1,5 +1,4 @@
 import settings
-import inspect
 import discord
 from discord.ext import commands
 from os import listdir
@@ -34,10 +33,9 @@ async def help(command_name : str=None):
         if command_name in bot.commands:
             command = bot.commands[command_name]
             aliases_str = ", ".join(command.aliases)
-            params_str = get_params_str(command)
 
             description = f"**Name:** {command.name}\n"
-            description += f"**Params:** {params_str}\n"
+            description += f"**Params:** {command.brief}\n"
             description += f"**Aliases:** {aliases_str}\n"
             description += f"**Description:** {command.description}"
 
@@ -46,10 +44,6 @@ async def help(command_name : str=None):
             await bot.say(embed=embed)
         else:
             await bot.say("That command does not exist.")
-
-def get_params_str(command):
-        func = inspect.signature(eval(command.name))
-        return func.parameters
 
 def main():
     for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
