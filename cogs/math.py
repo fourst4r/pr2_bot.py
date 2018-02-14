@@ -45,6 +45,9 @@ class Math:
 
         sum = 0
         for n in list(arg):
+            if n < 0 or n > 1000:
+                await self.bot.say(f"Parameter out of range: *ranks ({n})")
+                return
             sum += exp.calculate(n, n+1)
 
         await self.bot.say(sum)
