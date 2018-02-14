@@ -6,7 +6,7 @@ class Math:
         self.bot = bot
         self.pattern = re.compile(r"[\d\+-\/\*]+")
 
-    @commands.command(description="",
+    @commands.command(description="returns the sum of an equation.",
                       aliases=["m"],
                       brief="equation")
     async def math(self, equation : str):
