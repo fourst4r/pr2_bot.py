@@ -1,10 +1,11 @@
 import re
+from cogs.utils import exp
 from discord.ext import commands
 
 class Math:
     def __init__(self, bot):
         self.bot = bot
-        self.pattern = re.compile(r"[\d\+-\/\*]+")
+        self.equation_pattern = re.compile(r"[\d\+-\/\*]+")
 
     @commands.command(description="returns the sum of an equation.",
                       aliases=["m"],
@@ -12,7 +13,7 @@ class Math:
     async def math(self, equation : str):
         #region SANITY
 
-        if not self.pattern.match(equation):
+        if not self.equation_pattern.match(equation):
             await self.bot.say("Invalid equation.")
             return
 
@@ -23,6 +24,33 @@ class Math:
             return
         except Exception as e:
             await self.bot.say(str(e))
+            return
+
+    # per jmar's request ?
+    @commands.command(description="returns the sum of the required exp for the specified ranks",
+                      aliases=[],
+                      brief="*ranks")
+    async def exp_add(self, *arg : int):
+        #region SANITY
+
+        if len(arg) == 0:
+            await self.bot.say("Too few ranks.")
+            return
+
+        if len(arg) > 10:
+            await self.bot.say("Okay settle down...")
+            return
+
+        #endregion
+
+        sum = 0
+        for n in list(arg):
+            sum += exp.calculate(n, n+1)
+
+        await self.bot.say(sum)
+
+        
+
 
 def setup(bot):
     bot.add_cog(Math(bot))
