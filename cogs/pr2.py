@@ -1,5 +1,6 @@
 import pr2hub
 import discord
+import math
 from discord.ext import commands
 from cogs.utils import exp
 
@@ -116,8 +117,8 @@ class PR2():
 
     @commands.command(description="calculates experience required to reach a specified rank",
                       aliases=["xp"],
-                      brief="from [to [exp_per_day=700]]")
-    async def exp(self, _from : int, to : int=None, exp_per_day=700):
+                      brief="from [to [exp_per_day=720]]")
+    async def exp(self, _from : int, to : int=None, exp_per_day=720):
         if to == None:
             to = _from + 1
 

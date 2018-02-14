@@ -1,9 +1,13 @@
 from nap.url import Url
+from blinker import signal
 
 pr2hub = Url("https://pr2hub.com/")
 levels = pr2hub.join("levels/")
 files = pr2hub.join("files/")
 emblems = pr2hub.join("emblems/")
+
+# will fire when get_servers_info is called and there's an hh
+on_happy_hour = signal('hh')
 
 def __error_check(response):
     """checks if a pr2hub response is an error"""
@@ -41,7 +45,11 @@ def get_servers_info():
 
     servers = []
     for server_info in resp.json()["servers"]:
-        servers.append(Server(server_info))
+        new_server = Server(server_info)
+        servers.append(new_server)
+
+        if new_server.is_happy_hour:
+            on_happy_hour.send(new_server)
 
     return servers
 

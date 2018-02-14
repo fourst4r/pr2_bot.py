@@ -1,12 +1,16 @@
 import settings
 import discord
+import pr2hub
+
 from discord.ext import commands
 from os import listdir
 from os.path import isfile, join
 
 description = '''A PR2 utility bot.'''
 
-# this specifies what extensions to load when the bot starts up (from this directory)
+gog_hh_start_time = None
+gog_hh_active = False
+
 cogs_dir = "cogs"
 
 bot = commands.Bot(command_prefix='!', description=description)
@@ -18,6 +22,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+    #bot.loop.create_task(check_gog_status())
 
 @bot.command()
 async def help(command_name : str=None):
@@ -44,6 +49,24 @@ async def help(command_name : str=None):
             await bot.say(embed=embed)
         else:
             await bot.say("That command does not exist.")
+
+def on_happy_hour(server : pr2hub.Server):
+    if server.id != "148":
+        return
+
+    print("")
+
+# async def check_gog_status():
+#     while True:
+#         servers = pr2hub.get_servers_info()
+#         gog_server = next((x for x in servers if lambda s: s.id == "148"), None)
+
+#         if gog_server != None:
+#             if gog_server.is_happy_hour:
+#                 if gog_hh_active:
+
+#                 else:
+                    
 
 def main():
     for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
