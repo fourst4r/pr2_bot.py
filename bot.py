@@ -24,17 +24,18 @@ async def on_ready():
     print('------')
     #bot.loop.create_task(check_gog_status())
 
-@bot.command()
-async def help(command_name : str=None):
+@bot.command(pass_context=True)
+async def help(ctx, command_name : str=None):
     if command_name == None:
         command_names = []
         for _,command in bot.commands.items():
             if command.name not in command_names:
                 command_names.append(command.name)
         
-        embed = discord.Embed(title="-- Command List --", description="\n".join(command_names))
+        embed = discord.Embed(title="-- Command List --", description="\n".join(command_names.sort()))
         embed.set_footer(text="try '!help <command>' for more info")
-        await bot.say(embed=embed)
+        await bot.send_message(ctx.message.author, embed=embed)
+        #await bot.say(embed=embed)
     else:
         if command_name in bot.commands:
             command = bot.commands[command_name]

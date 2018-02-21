@@ -1,12 +1,14 @@
 import pr2hub
 import discord
 import math
+import re
 from discord.ext import commands
 from cogs.utils import exp
 
 class PR2():
     def __init__(self, bot):
         self.bot = bot
+        self.quoted = re.compile(r"\"(.+)\"")
 
     @commands.command(description="returns player information", 
                       aliases=["pi", "view"],
@@ -21,9 +23,14 @@ class PR2():
         #endregion
 
         player = None
+        match_obj = self.quoted.match(player_name)
 
         try:
-            player = pr2hub.get_player_info(player_name)
+            if match_obj:
+                print("quoted")
+                player = pr2hub.get_player_info(match_obj.group(num=0))
+            else:
+                player = pr2hub.get_player_info(player_name)
         except pr2hub.PR2HubError as e:
             await self.bot.say(str(e))
             return

@@ -5,7 +5,7 @@ from discord.ext import commands
 class Math:
     def __init__(self, bot):
         self.bot = bot
-        self.equation_pattern = re.compile(r"[\d\+-\/\*]+")
+        self.equation_pattern = re.compile(r"[\d\+-\/\*\.]+")
 
     @commands.command(description="returns the sum of an equation.",
                       aliases=["m"],
@@ -25,6 +25,12 @@ class Math:
         except Exception as e:
             await self.bot.say(str(e))
             return
+    
+    # @math.error
+    # async def do_repeat_handler(self, ctx, error):
+    #     if isinstance(error, commands.MissingRequiredArgument):
+    #         if error.param == 'inp':
+    #             await ctx.send("You forgot to give me input to repeat!")
 
     # per jmar's request ?
     @commands.command(description="returns the sum of the required exp for the specified ranks",
