@@ -32,7 +32,7 @@ async def help(ctx, command_name : str=None):
             if command.name not in command_names:
                 command_names.append(command.name)
         
-        embed = discord.Embed(title="-- Command List --", description="\n".join(command_names.sort()))
+        embed = discord.Embed(title="-- Command List --", description="\n".join(sorted(command_names)))
         embed.set_footer(text="try '!help <command>' for more info")
         await bot.send_message(ctx.message.author, embed=embed)
         #await bot.say(embed=embed)

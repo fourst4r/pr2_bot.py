@@ -25,12 +25,6 @@ class Math:
         except Exception as e:
             await self.bot.say(str(e))
             return
-    
-    # @math.error
-    # async def do_repeat_handler(self, ctx, error):
-    #     if isinstance(error, commands.MissingRequiredArgument):
-    #         if error.param == 'inp':
-    #             await ctx.send("You forgot to give me input to repeat!")
 
     # per jmar's request ?
     @commands.command(description="returns the sum of the required exp for the specified ranks",
@@ -57,9 +51,6 @@ class Math:
             sum += exp.calculate(n, n+1)
 
         await self.bot.say(sum)
-
-        
-
 
 def setup(bot):
     bot.add_cog(Math(bot))
